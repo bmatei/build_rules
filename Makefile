@@ -8,6 +8,8 @@ BUILD_DIR=dist
 CLEAN_TARGETS=$(BUILD_DIR)
 SRC=$(wildcard *.mk) interfaces templates features
 BUILD=$(addprefix $(BUILD_DIR)/$(BUILD_PREFIX)/,$(SRC))
+SCRIPTS_DIR=$(BUILD_DIR)/usr/local/bin
+SETUP_SCRIPT=$(SCRIPTS_DIR)/build-rules-setup.sh
 
 .PHONY: all
 all: build deploy-debian
@@ -16,7 +18,7 @@ include build_rules/features/deploy/debian.mk
 CLEAN_TARGETS+=$(DEBIAN_TARGET) $(DEBIAN_TARGET).deb
 
 .PHONY:build
-build: all-tests $(BUILD) dist/usr/bin/build-rules-setup.sh
+build: all-tests $(BUILD) $(SETUP_SCRIPT)
 
 .PHONY:all-tests
 all-tests: MAKECMDGOALS=all-tests
@@ -32,10 +34,10 @@ include build_rules/interfaces/clean.mk
 
 $(BUILD): $(BUILD_DIR)/$(BUILD_PREFIX)
 
-dist/usr/bin/build-rules-setup.sh: dist/usr/bin
+$(SETUP_SCRIPT): $(SCRIPTS_DIR)
 
-$(BUILD_DIR)/$(BUILD_PREFIX) $(BUILD_DIR)/usr/bin:
+$(BUILD_DIR)/$(BUILD_PREFIX) $(SCRIPTS_DIR):
 	@mkdir -pv $@
 
-$(BUILD) dist/usr/bin/build-rules-setup.sh:
-	@cp -Rv $(shell echo "$@" | sed -e 's@$(BUILD_DIR)/$(BUILD_PREFIX)/@@' -e 's@dist/usr/bin/@@') $<
+$(BUILD) $(SETUP_SCRIPT):
+	cp -Rv $(shell echo "$@" | sed -e 's@$(BUILD_DIR)/$(BUILD_PREFIX)/@@' -e 's@$(SCRIPTS_DIR)/@@') $<
