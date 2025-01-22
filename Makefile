@@ -1,4 +1,4 @@
-PACKAGE_NAME=build-rules
+PACKAGE_NAME=$(shell awk '/Package:/{print $$2}' debian/control)
 VERSION=$(shell ./genver.sh)
 
 MODULES=$(wildcard tests/*/)
