@@ -1,4 +1,4 @@
-Package: build-rules
+Package: build_rules
 Version: 1.0-1
 Section: base
 Priority: optional
