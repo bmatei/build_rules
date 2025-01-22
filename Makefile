@@ -18,7 +18,7 @@ include build_rules/features/deploy/debian.mk
 CLEAN_TARGETS+=$(DEBIAN_TARGET) $(DEBIAN_TARGET).deb
 
 .PHONY:build
-build: all-tests $(BUILD) $(SETUP_SCRIPT)
+build: all-tests $(BUILD_DIR) $(BUILD) $(SETUP_SCRIPT)
 
 .PHONY:all-tests
 all-tests: MAKECMDGOALS=all-tests
@@ -32,12 +32,10 @@ $(MODULES):
 docs:
 include build_rules/interfaces/clean.mk
 
-$(BUILD): $(BUILD_DIR)/$(BUILD_PREFIX)
-
-$(SETUP_SCRIPT): $(SCRIPTS_DIR)
+$(BUILD_DIR): $(BUILD_DIR)/$(BUILD_PREFIX) $(SCRIPTS_DIR)
 
 $(BUILD_DIR)/$(BUILD_PREFIX) $(SCRIPTS_DIR):
 	@mkdir -pv $@
 
 $(BUILD) $(SETUP_SCRIPT):
-	cp -Rv $(shell echo "$@" | sed -e 's@$(BUILD_DIR)/$(BUILD_PREFIX)/@@' -e 's@$(SCRIPTS_DIR)/@@') $<
+	cp -Rv "$(shell basename $@)" "$(shell dirname $@)"
