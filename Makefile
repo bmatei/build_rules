@@ -1,6 +1,3 @@
-PACKAGE_NAME=$(shell awk '/Package:/{print $$2}' debian/control)
-VERSION=$(shell ./genver.sh)
-
 MODULES=$(wildcard tests/*/)
 
 BUILD_PREFIX=var/lib/build_rules
