@@ -3,7 +3,7 @@ VERSION=$(shell ./genver.sh)
 
 MODULES=$(wildcard tests/*/)
 
-BUILD_PREFIX=var/lib/aware-devtools/build_rules
+BUILD_PREFIX=var/lib/build_rules
 BUILD_DIR=dist
 CLEAN_TARGETS=$(BUILD_DIR)
 SRC=$(wildcard *.mk) interfaces templates features
